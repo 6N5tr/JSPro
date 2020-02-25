@@ -1,0 +1,59 @@
+<div>
+  <button (click)="getUser('admin', 'ADMIN')">Administrador</button>
+  <button (click)="getUser('user', 'USER')">Usuario</button>
+</div>
+<div *ngIf="this.user?.role === 'USER'">
+  <h2>
+    Carrito de compras
+  </h2>
+  <div [formGroup]="this.shoppingCarHeaderForm">
+    <button [disabled]="this.shoppingCarHeaderForm.get('address').invalid"
+            (click)="this.registerShoppingCarHeader('CREATED')">Registrar
+      Cabesera
+    </button>
+    Direccion
+    <input formControlName="address" type="text">
+  </div>
+  <div *ngFor="let shoppingCarHeader of this.user.shoppingCarHeaders; let shoppingCarHeaderIndex= index">
+    <h4>
+      Cabezera de compras
+    </h4>
+    <div>
+      <button  (click)="this.deleteShoppingCarHeader(shoppingCarHeader.id, shoppingCarHeaderIndex)">Eliminar</button>
+      Estado: {{shoppingCarHeader.state}},
+      Fecha: {{shoppingCarHeader.date | date}},
+      Direccion: {{shoppingCarHeader.address}},
+      Total: {{shoppingCarHeader.total | currency}}
+      <button *ngIf="shoppingCarHeader.state === 'CREATED'" (click)="this.purchaseShoppingCar(shoppingCarHeader, shoppingCarHeaderIndex)">Comprar</button>
+    </div>
+    <h4>
+      Detalles de compras
+    </h4>
+    <div>
+      <app-shopping-car-detail [fathers]="this.fathers" [shoppingCarState]="shoppingCarHeader.state"
+                               [shoppingCarHeader]="shoppingCarHeader.id"
+                               (handlerShoppingCarDetails)="this.changeShoppingCarDetails($event, shoppingCarHeader, shoppingCarHeaderIndex)"></app-shopping-car-detail>
+    </div>
+    <hr>
+  </div>
+</div>
+<div *ngIf="this.user?.role === 'ADMIN'">
+  <h2>Registro Papas</h2>
+  <div [formGroup]="this.fatherForm">
+    <button [disabled]="this.fatherForm.invalid" (click)="registerFather()">Registrar papa</button>
+    Nombre: <input formControlName="name" type="text">
+  </div>
+  <div *ngFor="let father of fathers; let fatherIndex= index">
+    <h4>Papa</h4>
+    <div>
+      <button (click)="this.deleteFather(father.id, fatherIndex)">Eliminar</button>
+      Id: {{father.id}}
+      Nombre: {{father.name}}
+    </div>
+    <h4>Hijos</h4>
+    <div>
+      <app-son [sons]="father.sons" [father]="father.id"></app-son>
+    </div>
+    <hr>
+  </div>
+</div>

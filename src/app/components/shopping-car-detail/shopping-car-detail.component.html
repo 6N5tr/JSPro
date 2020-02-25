@@ -1,0 +1,22 @@
+<div [formGroup]="this.shoppingCarDetailForm">
+  <div *ngIf="this.shoppingCarState === 'CREATED'">
+    <button [disabled]="this.shoppingCarDetailForm.invalid" (click)="this.registerShoppingCarDetail()">Registrar
+      Detalle
+    </button>
+    Cantidad:
+    <input formControlName="quantity" type="number">
+    Hijo:
+    <select formControlName="son">
+      <option [value]="son.id" *ngFor="let son of this.sons">Padre: {{son.father?.id ? son.father?.id : son.father }},
+        Nombre: {{son.name}},
+        Precio: {{son.price | currency}}</option>
+    </select>
+  </div>
+  <div *ngFor="let shoppingCarDetail of this.shoppingCarDetails; let shoppingCarDetailIndex = index">
+    <button *ngIf="this.shoppingCarState === 'CREATED'" (click)="this.deleteShoppingCarDetail(shoppingCarDetail.id, shoppingCarDetailIndex)">Eliminar</button>
+    Hijo: {{shoppingCarDetail.son?.name}},
+    Cantidad: {{shoppingCarDetail.quantity}},
+    Precio: {{shoppingCarDetail.price | currency}},
+    Subtotal: {{shoppingCarDetail.subtotal | currency}}
+  </div>
+</div>

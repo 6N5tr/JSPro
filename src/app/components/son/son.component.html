@@ -1,0 +1,12 @@
+<div>
+  <div [formGroup]="this.sonForm">
+    <button [disabled]="this.sonForm.invalid" (click)="this.registerSon()">Registrar hijo</button>
+    Nombre: <input formControlName="name" type="text">
+    Precio: <input formControlName="price" type="number">
+  </div>
+  <div *ngFor="let son of this.sons; let sonIndex = index;">
+    <button (click)="this.deleteSon(son.id, sonIndex)">Eliminar</button>
+    Nombre: {{son.name}}
+    Precio: {{son.price | currency }}
+  </div>
+</div>
